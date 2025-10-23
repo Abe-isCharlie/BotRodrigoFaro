@@ -1,1 +1,24 @@
+node_modules/
+
+# Variáveis de ambiente
 .env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build (se tiver)
+dist/
+build/
