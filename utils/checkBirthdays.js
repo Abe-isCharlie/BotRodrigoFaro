@@ -28,7 +28,7 @@ module.exports = async function checarAniversarios(client) {
   for (const [id, info] of Object.entries(aniversarios)) {
     if (info.data.startsWith(hojeStr)) {
       const idade = calcIdade(info.data);
-      canal.send(`# FINALMENTE CARALHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO`);
+      canal.send(`🎉 Parabéns <@${id}> pelo seu aniversário de ${idade} anos! 🎉`);
     }
   }
 };
