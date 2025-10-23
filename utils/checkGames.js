@@ -1,17 +1,12 @@
-require("dotenv").config()
+require("dotenv").config();
 const fetch = require("node-fetch");
 const { EmbedBuilder } = require("discord.js");
-const API_KEY = process.env.API_KEY
+const API_KEY = process.env.API_KEY;
 
-const esquadrão = [
-  "SC Corinthians Paulista",
-  "EC Bahia",
-  "Botafogo FR",
-  "Grêmio FBPA",
-];
+const esquadrão = ["SC Corinthians Paulista", "Botafogo FR", "Grêmio FBPA"];
 
 async function checkGames(client, canalID) {
-  // const hoje = "2025-04-27"; 
+  // const hoje = "2025-04-27";
   const hoje = new Date()
     .toLocaleDateString("pt-BR", {
       timeZone: "America/Sao_Paulo",
@@ -28,12 +23,12 @@ async function checkGames(client, canalID) {
         headers: {
           "X-Auth-Token": API_KEY,
         },
-      },
+      }
     );
 
     if (!resposta.ok) {
       console.error(
-        `Erro ao buscar partidas: ${resposta.status} - ${resposta.statusText}`,
+        `Erro ao buscar partidas: ${resposta.status} - ${resposta.statusText}`
       );
       return;
     }
@@ -60,7 +55,7 @@ async function checkGames(client, canalID) {
       // Convertendo a data UTC do jogo para o horário de Brasília
       const horarioUTC = new Date(partida.utcDate);
       const horarioBR = new Date(
-        horarioUTC.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }),
+        horarioUTC.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
       );
 
       // Verifica se a data do jogo é a data de hoje no horário de Brasília
@@ -78,20 +73,18 @@ async function checkGames(client, canalID) {
       // Verifica primeiro o time da casa
       if (esquadrão.includes(timeCasa)) {
         if (timeCasa === "SC Corinthians Paulista") corEmbed = "#000000";
-        else if (timeCasa === "EC Bahia") corEmbed = "#0000FF";
         else if (timeCasa === "Botafogo FR") corEmbed = "#000000";
         else if (timeCasa === "Grêmio FBPA") corEmbed = "#0075B1";
       }
       // Se não encontrou, verifica o time visitante
       else if (esquadrão.includes(timeFora)) {
         if (timeFora === "SC Corinthians Paulista") corEmbed = "#000000";
-        else if (timeFora === "EC Bahia") corEmbed = "#0000FF";
         else if (timeFora === "Botafogo FR") corEmbed = "#000000";
         else if (timeFora === "Grêmio FBPA") corEmbed = "#0075B1";
       }
 
       const timeEscolhido = esquadrão.find(
-        (time) => time === timeCasa || time === timeFora,
+        (time) => time === timeCasa || time === timeFora
       );
       const escudoTimeEscolhido = getEscudoTime(timeEscolhido);
       const iconAuthor =
@@ -102,7 +95,9 @@ async function checkGames(client, canalID) {
         .setColor(parseInt(corEmbed.replace("#", ""), 16))
         .setTitle("⚽ HOJE TEM BRASILEIRÃO! ⚽")
         .setDescription(
-          `${getEmojiTime(timeCasa)} ${timeCasa} 🆚 ${timeFora} ${getEmojiTime(timeFora)}`,
+          `${getEmojiTime(timeCasa)} ${timeCasa} 🆚 ${timeFora} ${getEmojiTime(
+            timeFora
+          )}`
         )
         .setThumbnail(escudoTimeEscolhido)
         .addFields(
@@ -120,11 +115,13 @@ async function checkGames(client, canalID) {
             name: "📺 Onde assistir",
             value: "Premiere / Sportv",
             inline: true,
-          },
+          }
         )
         .setImage("https://c.tenor.com/peTBjwmCIoAAAAAC/futebol-football.gif")
         .setAuthor({
-          name: `Rodada ${partida.matchday || "?"} - Brasileirão Série A ${new Date().getFullYear()}`,
+          name: `Rodada ${
+            partida.matchday || "?"
+          } - Brasileirão Série A ${new Date().getFullYear()}`,
           iconURL:
             "https://upload.wikimedia.org/wikipedia/pt/thumb/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png/250px-Campeonato_Brasileiro_S%C3%A9rie_A_logo.png", // Ícone corrigido
         })
@@ -153,7 +150,6 @@ function getEscudoTime(nomeTime) {
   const escudos = {
     "SC Corinthians Paulista":
       "https://upload.wikimedia.org/wikipedia/commons/c/c9/Escudo_sc_corinthians.png",
-    "EC Bahia": "https://upload.wikimedia.org/wikipedia/pt/9/90/ECBahia.png",
     "Botafogo FR":
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Botafogo_de_Futebol_e_Regatas_logo.svg/300px-Botafogo_de_Futebol_e_Regatas_logo.svg.png",
     "Grêmio FBPA":
